@@ -5,34 +5,25 @@
 #include <SDL.h>
 #include "renderer.hpp"
 
-bool frame()
+bool spining = false;
+
+bool frame(ISSDraw &model)
 {
     /* These are to calculate our fps */
-    static GLint T0     = 0;
-    static GLint Frames = 0;
+    static GLint T0 = 0;
+    static int spin = 0;
 
     /* Clear The Screen And The Depth Buffer */
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glLoadIdentity();
 
-    //glRotatef(Frames, 4, 5, 3);
-    renderer_draw();
+    if(spining)
+      spin++;
+    glRotatef(spin, 0, 0.0, 1);
+    model.draw();
 
     /* Draw it to the screen */
     SDL_GL_SwapBuffers( );
-
-    /* Gather our frames per second */
-    Frames++;
-    {
-	GLint t = SDL_GetTicks();
-	if (t - T0 >= 5000) {
-	    GLfloat seconds = (t - T0) / 1000.0;
-	    GLfloat fps = Frames / seconds;
-	    printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
-	    T0 = t;
-	    Frames = 0;
-	}
-    }
 
     return true;
 }
@@ -221,6 +212,9 @@ bool handle_input()
 	      Quit( 1 );
 	    }
 	  resizeWindow( event.resize.w, event.resize.h );
+	  break;
+	case SDL_MOUSEBUTTONDOWN:
+	  spining = !spining;
 	  break;
 	case SDL_QUIT:
 	  /* handle quit requests */

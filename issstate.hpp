@@ -23,9 +23,6 @@ struct Angular
       (prev.a + vel.min() * (60.0 - t0) + prev.v * t0 - maxaccel * 0.5 * t0 * t0,
        prev.a + vel.max() * (60.0 - t1) + prev.v * t1 + maxaccel * 0.5 * t1 * t1);
 
-    
-    std::cerr << t0 << ' ' << t1 << ' ' << prev.v << ' ' << vel.min() << ' ' << vel.max() << '\n';
-
     v = vel(rnd);
     a = angle(rnd);
     while(a > 360.0)

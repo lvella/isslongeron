@@ -1,6 +1,7 @@
+#include <random>
 #include "issstate.hpp"
 
-std::mt19937 rnd((std::random_device())());
+std::mt19937 rnd(std::random_device{}());
 Real beta;
 
 std::ostream&

@@ -48,5 +48,4 @@ the transformation matrix to lines and rectangles, respectively.
 I lack the motivation to continue the task, and I am abandoning it as it is now:
 generating one random solution, and animating it in OpenGL (hopefuly, from sun's
 perpective)using dubious joints coordinates, calculated crudely from the .stl
-file. For some (easily fixable) reason GCC refuses to compile the code, so I am
-using Clang.
+file.
