@@ -4,7 +4,7 @@ about the challenge, just 2 days before finishing. While I knew I had
 extremely low chance of competing, just now, 24 hours after starting coding,
 I gave up and decidade to release my far from complete attempt solution.
 
-I do so because I belive mine idea to be a promising approach. I have no clue
+I do so because I belive my idea to be a promising approach. I have no clue
 on how to organize the movement of the panels to have the optimum power
 generation, but considering you can precompute the solution of the problem, I
 could use genetic algorithm and an bit of simulation to let the computer find a
