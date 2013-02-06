@@ -1,3 +1,5 @@
 #pragma once
 
-int display_mainloop();
+bool frame();
+int display_init();
+bool handle_input();

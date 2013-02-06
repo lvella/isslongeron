@@ -15,6 +15,7 @@ bool frame()
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glLoadIdentity();
 
+    //glRotatef(Frames, 4, 5, 3);
     renderer_draw();
 
     /* Draw it to the screen */
@@ -74,7 +75,7 @@ bool resizeWindow( int width, int height )
     glLoadIdentity( );
 
     /* Set our perspective */
-    glOrtho(-100000, +100000, 100000.0 / ratio, -100000.0 / ratio, 100000, -100000);
+    glOrtho(-80000, +80000, 80000.0 / ratio, -80000.0 / ratio, 80000, -80000);
 
     /* Make sure we're chaning the model view and not the projection */
     glMatrixMode( GL_MODELVIEW );
@@ -132,18 +133,13 @@ bool initGL()
     return true;
 }
 
-int display_mainloop()
+/* Flags to pass to SDL_SetVideoMode */
+static int videoFlags;
+
+int display_init()
 {
-    /* Flags to pass to SDL_SetVideoMode */
-    int videoFlags;
-    /* main loop variable */
-    bool done = false;
-    /* used to collect events */
-    SDL_Event event;
     /* this holds some info about our display */
     const SDL_VideoInfo *videoInfo;
-    /* whether or not the window is active */
-    bool isActive = true;
 
     /* initialize SDL */
     if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -199,58 +195,41 @@ int display_mainloop()
     /* resize the initial window */
     resizeWindow( SCREEN_WIDTH, SCREEN_HEIGHT );
 
-    /* wait for events */
-    while ( !done )
-	{
-	    /* handle the events in the queue */
+    return 0;
+}
 
-	    while ( SDL_PollEvent( &event ) )
-		{
-		    switch( event.type )
-			{
-			case SDL_ACTIVEEVENT:
-			    /* Something's happend with our focus
-			     * If we lost focus or we are iconified, we
-			     * shouldn't draw the screen
-			     */
-			    if ( event.active.gain == 0 )
-				isActive = false;
-			    else
-				isActive = true;
-			    break;			    
-			case SDL_VIDEORESIZE:
-			    /* handle resize event */
-			    surface = SDL_SetVideoMode( event.resize.w,
-							event.resize.h,
-							16, videoFlags );
-			    if ( !surface )
-				{
-				    fprintf( stderr, "Could not get a surface after resize: %s\n", SDL_GetError( ) );
-				    Quit( 1 );
-				}
-			    resizeWindow( event.resize.w, event.resize.h );
-			    break;
-			case SDL_KEYDOWN:
-			    /* handle key presses */
-			    handleKeyPress( &event.key.keysym );
-			    break;
-			case SDL_QUIT:
-			    /* handle quit requests */
-			    done = true;
-			    break;
-			default:
-			    break;
-			}
-		}
+bool handle_input()
+{
+  bool running = true;
+  
+  /* used to collect events */
+  SDL_Event event;
 
-	    /* draw the scene */
-	    if ( isActive )
-		frame( );
+  /* handle the events in the queue */
+  while ( SDL_PollEvent( &event ) )
+    {
+      switch( event.type )
+	{			    
+	case SDL_VIDEORESIZE:
+	  /* handle resize event */
+	  surface = SDL_SetVideoMode( event.resize.w,
+				      event.resize.h,
+				      16, videoFlags );
+	  if ( !surface )
+	    {
+	      fprintf( stderr, "Could not get a surface after resize: %s\n", SDL_GetError( ) );
+	      Quit( 1 );
+	    }
+	  resizeWindow( event.resize.w, event.resize.h );
+	  break;
+	case SDL_QUIT:
+	  /* handle quit requests */
+	  running = false;
+	  break;
+	default:
+	  break;
 	}
+    }
 
-    /* clean ourselves up and exit */
-    Quit( 0 );
-
-    /* Should never get here */
-    return( 0 );
+  return running;
 }

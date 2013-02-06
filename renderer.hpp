@@ -83,6 +83,7 @@ struct Solid
   void draw() const
   {
     for(auto &f: faces) {
+      glColor3ub(id*3+70, id*3+70, id*3+70);
       glBegin(GL_TRIANGLES);
       for(auto &v: f.verts) {
 	glVertex3f(v.x, v.y, v.z);
@@ -128,6 +129,11 @@ struct ISSDraw
 
   void draw(int n = -1)
   {
+    // Face sun
+    glRotatef(-beta, 1,0,0);
+    glRotatef(-alpha, 0,1,0);
+    glRotatef(-yaw, 0,0,1);
+
     // Starboard radiator
     glPushMatrix();
     solids[39].rotate(sloop, 1, 0, 0);
@@ -201,6 +207,16 @@ struct ISSDraw
     glPopMatrix();
 
     glPopMatrix();
+
+    // Static body
+    std::vector<bool> drawn(solids.size(), false);
+    drawn[7] = drawn[9] = drawn[13] = drawn[14]
+      = drawn[15] = drawn[22] = drawn[29] = drawn[31]
+      = drawn[35] = drawn[37] = drawn[39] = drawn[43]
+      = true;
+    for(auto &s : solids)
+      if(!drawn[s.id])
+	s.draw();
   }
 
   std::vector<Solid> solids;
@@ -208,6 +224,9 @@ struct ISSDraw
 
   Real ploop;
   Real sloop;
+
+  Real alpha;
+  Real yaw;
 };
 
 void renderer_draw();
