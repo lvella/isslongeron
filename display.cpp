@@ -115,12 +115,6 @@ bool initGL()
     /* Enables Depth Testing */
     glEnable( GL_DEPTH_TEST );
 
-    /* The Type Of Depth Test To Do */
-    glDepthFunc( GL_LEQUAL );
-
-    /* Really Nice Perspective Calculations */
-    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
-
     return true;
 }
 
